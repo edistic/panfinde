@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f0f4f8; /* Light blueish grey background */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 3D Header Text Styling */
+.header-3d {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+    text-shadow: 
+        1px 1px 0 #0056b3,
+        2px 2px 0 #004494,
+        3px 3px 0 #003375,
+        4px 4px 0 #002256,
+        5px 5px 10px rgba(0,0,0,0.4);
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Realistic Card Design */
+.card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    border-top: 6px solid #f39c12; /* PAN portal orange accent */
+}
+
+.dashboard-card {
+    max-width: 600px;
+    border-top: 6px solid #0056b3; /* PAN portal blue accent */
+    text-align: center;
+}
+
+.welcome-msg {
+    color: #0056b3;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+/* Inputs and Buttons */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #f39c12;
+    outline: none;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.2);
+}
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    background: #0056b3;
+}
+.btn:hover { background: #004494; }
+
+.btn-orange { background: #f39c12; margin-top: 15px;}
+.btn-orange:hover { background: #e67e22; }
+
+/* Captcha Styling */
+.captcha-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #e9ecef;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+.captcha-box span { font-size: 18px; font-weight: 800; letter-spacing: 1px; color: #333;}
+.captcha-box input { width: 50%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; }
+
+/* Payment & QR Section */
+.payment-section, .utr-section {
+    display: none;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed #ccc;
+}
+
+.qr-box {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+    margin: 15px 0;
+}
+.qr-box img { width: 180px; height: 180px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px;}
+.qr-box h3 { color: #d35400; margin-bottom: 10px; }
+
+/* Footer */
+.footer {
+    background: #343a40;
+    color: #f8f9fa;
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    margin-top: auto;
+}
+.footer p { margin: 5px 0; }
+.footer .refund-policy { color: #f1c40f; font-weight: 600; margin-top: 10px; }

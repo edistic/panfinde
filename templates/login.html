@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saud Pan Finde Portal - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <!-- 3D Header -->
+        <h1 class="header-3d">Saud Pan Finde Portal</h1>
+        
+        <div class="card">
+            <!-- Form points to /dashboard -->
+            <form action="/dashboard" method="POST" onsubmit="return validateLogin()">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="userName" name="userName" placeholder="Enter Your Name" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <input type="text" id="mobileNum" placeholder="10 Digit Number" maxlength="10" pattern="\d{10}" required>
+                </div>
+                
+                <div class="captcha-box">
+                    <span id="captchaText"></span>
+                    <input type="number" id="captchaInput" placeholder="Answer" required>
+                </div>
+                
+                <button type="submit" class="btn">Login Securely</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let expectedAns;
+        
+        // Generate Math Captcha
+        function loadCaptcha() {
+            let n1 = Math.floor(Math.random() * 10) + 1;
+            let n2 = Math.floor(Math.random() * 10) + 1;
+            expectedAns = n1 + n2;
+            document.getElementById('captchaText').innerText = `${n1} + ${n2} = ?`;
+        }
+
+        function validateLogin() {
+            let ans = parseInt(document.getElementById('captchaInput').value);
+            if(ans !== expectedAns) {
+                alert("Captcha galat hai! Kripya sahi answer dalein.");
+                loadCaptcha();
+                document.getElementById('captchaInput').value = "";
+                return false; // Roke form submit hone se
+            }
+            return true; // Form submit hone de
+        }
+
+        window.onload = loadCaptcha;
+    </script>
+</body>
+</html>

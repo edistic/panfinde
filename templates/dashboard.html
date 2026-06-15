@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Dashboard - Pan Finde</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Enhanced UI / UX Design Additions */
+        body {
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .dashboard-card {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-top: 8px solid #0056b3;
+            overflow: hidden;
+        }
+
+        .welcome-msg {
+            background: #0056b3;
+            color: #ffffff;
+            padding: 20px;
+            margin: -40px -40px 30px -40px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .input-group label {
+            color: #333;
+            font-weight: 600;
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        .input-group input:focus {
+            border-color: #f39c12;
+            background: #fff;
+            box-shadow: 0 0 12px rgba(243, 156, 18, 0.2);
+            outline: none;
+        }
+
+        .btn-orange, .btn-proceed {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 15px rgba(243, 156, 18, 0.3);
+            transition: 0.3s;
+            margin-top: 15px;
+        }
+        .btn-orange:hover, .btn-proceed:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
+        }
+        .btn-proceed {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            box-shadow: 0 6px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .qr-box {
+            background: #ffffff;
+            border: 2px dashed #0056b3;
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            text-align: center;
+        }
+
+        .qr-box img {
+            border: 8px solid #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Upgraded Timer Design */
+        #timerContainer {
+            background: #fff3e0;
+            border-left: 5px solid #e74c3c;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.2); }
+            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+
+        .timer-text {
+            font-size: 34px;
+            font-weight: 900;
+            color: #e74c3c;
+            letter-spacing: 3px;
+        }
+        
+        .timer-msg {
+            font-size: 15px;
+            color: #d35400;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .warning-msg {
+            color: #c0392b !important;
+            font-weight: 800;
+            animation: shake 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(3px); }
+        }
+
+        /* Animation for UTR Box appearing after 10s */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in-element {
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container" style="max-width: 600px; margin: 50px auto;">
+        <div class="card dashboard-card" style="padding: 40px;">
+            
+            <div class="welcome-msg" style="text-align: center;">
+                {{ name }}, Saud Travels Me Aap Ka Swagat Hai
+            </div>
+
+            <!-- Step 1: Document Details -->
+            <div id="step1">
+                <div class="input-group">
+                    <label>Apna 12 Digit Ka Aadhar Number Fill Karo</label>
+                    <input type="text" id="aadharNum" placeholder="XXXX-XXXX-XXXX" maxlength="12" pattern="\d{12}" required>
+                </div>
+                <button class="btn-orange" onclick="showPayment()">Proceed To Pay ₹39</button>
+            </div>
+
+            <!-- Step 2: Payment, QR Setup & UTR -->
+            <div id="step2" class="payment-section" style="display: none;">
+                <div class="qr-box">
+                    <h3 style="color: #0056b3; font-weight: 800; font-size: 22px; margin-top: 0;">Pay ₹39 via UPI</h3>
+                    
+                    <!-- 1 Minute Timer -->
+                    <div id="timerContainer">
+                        <div class="timer-text" id="timerDisplay">01:00</div>
+                        <p class="timer-msg" id="timerMessage">Kripya payment complete karein. Proceed button countdown ke baad aayega.</p>
+                    </div>
+
+                    <!-- Payment QR Code (Fixed for ₹39) -->
+                    <!-- URL encoded upi://pay?pa=8604890504@upi&pn=SaudTravels&am=39.00&cu=INR -->
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi%3A%2F%2Fpay%3Fpa%3D8604890504%40upi%26pn%3DSaudTravels%26am%3D39.00%26cu%3DINR" alt="Secure UPI Payment QR Code">
+                    <p style="margin-top: 15px; font-size: 18px; color: #333;"><strong>UPI ID:</strong> <span style="color: #e67e22;">8604890504@upi</span></p>
+
+                    <!-- UTR Box: Yeh 10 second baad show hoga -->
+                    <div id="utrContainer" style="display: none; margin-top: 25px; text-align: left;" class="fade-in-element">
+                        <div class="input-group">
+                            <label style="color: #c0392b;">Payment Ke Dauran Jo UTR / Transaction ID (12 Digit) Mila Hai Use Dalein</label>
+                            <input type="text" id="utrNum" placeholder="Enter 12 Digit UTR Number" maxlength="12" pattern="\d{12}" required>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- Proceed Button: Timer khatam hone par aayega -->
+                <button class="btn-proceed" id="proceedBtn" style="display: none;" onclick="finalSubmit()">Proceed</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="footer" style="background: #1a252f; border-top: 4px solid #f39c12; color: white;">
+        <p><strong>Customer Care:</strong> 8604890504, 7235870535 | <strong>Email:</strong> saud.travels.csc@gmail.com</p>
+        <p class="refund-policy" style="color: #f39c12; letter-spacing: 0.5px;">Ager Payment Faild Hota Hai to 2 se 4 din Ke Ander Me App Ke Account Per Redirect Ker diya Jayga.</p>
+    </div>
+
+    <script>
+        function showPayment() {
+            let aadhar = document.getElementById("aadharNum").value;
+            // Check if Aadhar is exactly 12 digits
+            if(aadhar.length !== 12 || isNaN(aadhar)) {
+                alert("Kripya sahi 12-digit Aadhar number darj karein.");
+                return;
+            }
+            
+            // UI Transition
+            document.getElementById("step1").style.display = "none";
+            document.getElementById("step2").style.display = "block";
+
+            // Timer Started for 60 Seconds (1 Minute)
+            startTimer(60);
+
+            // 10 Second Delay for UTR Input Box
+            setTimeout(function() {
+                document.getElementById("utrContainer").style.display = "block";
+            }, 10000); // 10000 ms = 10 seconds
+        }
+
+        function startTimer(duration) {
+            let timer = duration;
+            let display = document.getElementById('timerDisplay');
+            let proceedBtn = document.getElementById('proceedBtn');
+            let timerContainer = document.getElementById('timerContainer');
+            let timerMessage = document.getElementById('timerMessage');
+
+            let countdown = setInterval(function () {
+                let minutes = parseInt(timer / 60, 10);
+                let seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                // Jab 15 seconds bachein tab warning message show hoga
+                if (timer === 15) {
+                    timerMessage.innerHTML = "Kripya apna payment karein, samay samapt hone wala hai!";
+                    timerMessage.classList.add("warning-msg"); 
+                    display.style.color = "#c0392b"; 
+                }
+
+                if (--timer < 0) {
+                    // Timer Ends (60 Seconds complete)
+                    clearInterval(countdown);
+                    timerContainer.style.display = "none";
+                    proceedBtn.style.display = "block";
+                }
+            }, 1000);
+        }
+
+        // Final Submit ab directly Proceed button par set hai, Step 3 ki zaroorat nahi
+        function finalSubmit() {
+            let utr = document.getElementById("utrNum").value;
+            if(utr.length !== 12 || isNaN(utr)) {
+                alert("Kripya sahi 12-digit UTR number darj karein.");
+                return;
+            }
+            
+            // Final Legal Prompt
+            alert("Pan Finde Ki Total Fees 98 Rupe Hai Jo Ki Abh App Ko Bus 59 Aur Pay Kerna Hoga Jo Final Rahega");
+            
+            // API Redirection
+            window.location.href = "https://panfindservice.com/search_pan.php";
+        }
+    </script>
+</body>
+</html>
