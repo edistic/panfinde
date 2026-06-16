@@ -3,237 +3,716 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Dashboard - Pan Finde</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Saud Travels - Royal Premium Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* Enhanced UI / UX Design Additions */
+        /* ===== Royal Theme Colors & Reset ===== */
+        :root {
+            --royal-bg: #071022;
+            --card-bg: linear-gradient(145deg, #112240, #0a192f);
+            --gold-primary: #D4AF37;
+            --gold-light: #FFDF73;
+            --gold-dark: #AA8C2C;
+            --text-main: #E6F1FF;
+            --text-muted: #8892B0;
+        }
+
         body {
-            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            background: var(--royal-bg); 
+            background-image: radial-gradient(circle at 50% 0%, #1a365d 0%, transparent 70%);
             font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            color: var(--text-main);
         }
 
-        .dashboard-card {
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border-top: 8px solid #0056b3;
+        /* ===== Top Navigation Bar ===== */
+        .top-bar {
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            border-bottom: 2px solid var(--gold-dark);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .brand-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .logout-btn {
+            background: transparent;
+            color: var(--gold-light);
+            border: 2px solid var(--gold-primary);
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            background: var(--gold-primary);
+            color: #000;
+            box-shadow: 0 0 15px var(--gold-primary);
+            transform: translateY(-2px);
+        }
+
+        /* ===== Side Support Panel ===== */
+        .side-support {
+            position: fixed;
+            right: -290px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #112240;
+            width: 290px;
+            padding: 25px 20px 25px 30px;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+            box-shadow: -5px 10px 30px rgba(0,0,0,0.5);
+            border-left: 3px solid var(--gold-primary);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 999;
+        }
+
+        .side-support:hover { right: 0; }
+
+        .support-icon {
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: var(--gold-primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            color: #000;
+            box-shadow: 0 0 15px var(--gold-primary);
+            cursor: pointer;
+            animation: supportPulse 2s infinite;
+        }
+
+        @keyframes supportPulse {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        .support-details h4 { margin: 0 0 15px 0; color: var(--gold-light); font-family: 'Cinzel', serif; font-size: 18px; }
+        .support-details p { margin: 8px 0; font-size: 14px; color: var(--text-main); font-weight: 300; }
+
+        /* ===== Main Container Layout ===== */
+        .main-container {
+            max-width: 1200px;
+            margin: 120px auto 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-align: center;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        /* ===== Big Royal Services Grid ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            padding: 40px 25px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 250px;
         }
 
-        .welcome-msg {
-            background: #0056b3;
-            color: #ffffff;
-            padding: 20px;
-            margin: -40px -40px 30px -40px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            font-size: 24px;
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(212,175,55,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(212,175,55,0.3);
+        }
+
+        .service-card:hover::before { opacity: 1; }
+
+        .service-card .icon { 
+            font-size: 60px; 
+            margin-bottom: 20px; 
+            filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));
+        }
+
+        .service-card h3 { font-size: 22px; color: var(--gold-light); margin: 0 0 10px 0; font-family: 'Cinzel', serif; }
+        .service-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 25px; line-height: 1.5; }
+
+        .click-cta {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary));
+            color: #000;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 14px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .input-group label {
-            color: #333;
-            font-weight: 600;
-            font-size: 16px;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .input-group input {
-            width: 100%;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 15px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #f9f9f9;
-            box-sizing: border-box;
-        }
-
-        .input-group input:focus {
-            border-color: #f39c12;
-            background: #fff;
-            box-shadow: 0 0 12px rgba(243, 156, 18, 0.2);
-            outline: none;
-        }
-
-        .btn-orange, .btn-proceed {
-            width: 100%;
-            border: none;
-            cursor: pointer;
-            color: white;
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-            border-radius: 10px;
-            padding: 16px;
-            font-size: 18px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 6px 15px rgba(243, 156, 18, 0.3);
+            width: 80%;
             transition: 0.3s;
-            margin-top: 15px;
+            z-index: 1;
         }
-        .btn-orange:hover, .btn-proceed:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
-        }
-        .btn-proceed {
-            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-            box-shadow: 0 6px 15px rgba(39, 174, 96, 0.3);
+        .service-card:hover .click-cta { transform: scale(1.05); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
+
+        .premium-badge {
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: linear-gradient(90deg, #ff0000, #cc0000);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 8px 40px;
+            transform: rotate(45deg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+            z-index: 2;
         }
 
-        .qr-box {
-            background: #ffffff;
-            border: 2px dashed #0056b3;
-            border-radius: 15px;
-            padding: 30px;
-            position: relative;
-            text-align: center;
+        /* ===== Hidden Section Processing (Slide Animation) ===== */
+        .pan-find-container {
+            display: none;
+            animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            margin-top: 20px;
         }
-
-        .qr-box img {
-            border: 8px solid #f9f9f9;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-
-        /* Upgraded Timer Design */
-        #timerContainer {
-            background: #fff3e0;
-            border-left: 5px solid #e74c3c;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.2); }
-            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
-        }
-
-        .timer-text {
-            font-size: 34px;
-            font-weight: 900;
-            color: #e74c3c;
-            letter-spacing: 3px;
-        }
-        
-        .timer-msg {
-            font-size: 15px;
-            color: #d35400;
-            font-weight: 600;
-            margin-top: 5px;
-        }
-
-        .warning-msg {
-            color: #c0392b !important;
-            font-weight: 800;
-            animation: shake 0.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(3px); }
-        }
-
-        /* Animation for UTR Box appearing after 10s */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-40px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* ========================================================
+           ===== CUSTOM NEW PAN FIND UI (INTEGRATED ROYAL CSS) =====
+           ======================================================== */
         
-        .fade-in-element {
-            animation: fadeIn 1s ease-in-out forwards;
+        .sp-wrap {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 24px 14px 40px;
         }
+
+        .sp-hero {
+            background: linear-gradient(135deg, rgba(17, 34, 64, 0.9) 0%, rgba(10, 25, 47, 0.9) 100%);
+            border: 1px solid var(--gold-dark);
+            border-radius: 16px;
+            padding: 28px 20px 24px;
+            text-align: center;
+            margin-bottom: 22px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .sp-hero .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--gold-primary);
+            border-radius: 999px;
+            padding: 5px 15px;
+            font-size: 12px;
+            color: var(--gold-light);
+            font-weight: 600;
+            letter-spacing: .5px;
+            margin-bottom: 15px;
+        }
+
+        .sp-hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .sp-hero p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .sp-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--gold-dark);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            padding: 30px 25px;
+            animation: fadeInUp .5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sp-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .sp-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            letter-spacing: 0.5px;
+        }
+
+        .sp-label i { color: var(--gold-primary); }
+
+        .sp-input {
+            width: 100%;
+            padding: 15px 16px;
+            border: 1.5px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-main);
+            background: #0a192f;
+            transition: all .3s;
+            outline: none;
+            box-sizing: border-box;
+            letter-spacing: 1.5px;
+        }
+
+        .sp-input:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+            background: #112240;
+        }
+
+        .sp-notice {
+            margin-top: 6px;
+            font-size: 12.5px;
+            color: #ff6b6b;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            line-height: 1.5;
+        }
+
+        .sp-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            transition: all .3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .sp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+        }
+
+        .sp-btn:disabled {
+            background: #475569;
+            color: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* Loading Bar Styles */
+        .sp-loading { display: none; margin-top: 20px; }
+        .sp-bar-bg {
+            background: #112240;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 999px;
+            overflow: hidden;
+            height: 10px;
+            position: relative;
+        }
+        .sp-bar-fill {
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary), var(--gold-light));
+            height: 100%;
+            width: 0%;
+            transition: width .3s ease;
+            border-radius: 999px;
+            position: relative;
+            overflow: hidden;
+        }
+        .sp-bar-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .6), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) }
+            100% { transform: translateX(100%) }
+        }
+        .sp-loading-txt {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        /* Assurance Box */
+        .assurance {
+            background: rgba(10, 25, 47, 0.8);
+            border: 1px dashed var(--gold-primary);
+            border-radius: 14px;
+            padding: 18px;
+            margin-top: 25px;
+            animation: fadeInUp .6s ease;
+            text-align: center;
+        }
+        .assurance p {
+            font-size: 14px;
+            color: #22c55e;
+            font-weight: 600;
+            margin: 0 0 10px;
+        }
+        .assurance .contact-line {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .assurance a {
+            color: var(--gold-light);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* ===== Payment QR Section inside SP Card ===== */
+        .qr-box { text-align: center; padding: 10px; }
+        .qr-box img {
+            border: 4px solid var(--gold-primary);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(212,175,55,0.3);
+            margin-bottom: 20px;
+            background: #fff;
+        }
+
+        #timerContainer {
+            background: rgba(255, 0, 0, 0.05);
+            border: 1px solid #ff4757;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .timer-text { font-size: 40px; font-family: 'Cinzel', serif; font-weight: 700; color: #ff4757; letter-spacing: 2px; }
+        .timer-progress-bar { position: absolute; bottom: 0; left: 0; height: 5px; background: linear-gradient(90deg, #ff4757, #ff6b81); width: 100%; transition: width 1s linear; }
+        .timer-msg { font-size: 15px; color: #ffa502; margin-top: 8px; }
+        
+        .urgent-timer { animation: urgentPulse 0.5s infinite alternate; color: #ff0000; }
+        @keyframes urgentPulse {
+            0% { transform: scale(1); text-shadow: 0 0 10px red; }
+            100% { transform: scale(1.1); text-shadow: 0 0 25px red; }
+        }
+
+        /* Animated Proceed Button */
+        .btn-success {
+            width: 100%; margin-top: 25px; border: none; cursor: pointer; color: #fff; border-radius: 10px; padding: 18px; font-size: 18px; font-family: 'Cinzel', serif; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; position: relative; overflow: hidden; background: linear-gradient(270deg, #059669, #10b981, #047857); background-size: 400% 400%; animation: gradientMove 3s ease infinite; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); transition: all 0.3s;
+        }
+        .btn-success:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 35px rgba(16, 185, 129, 0.6); }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .footer {
             text-align: center;
-            padding: 20px;
+            padding: 30px;
+            background: #020617; 
+            border-top: 1px solid var(--gold-dark);
+            color: var(--text-muted);
+            margin-top: 80px;
+            font-size: 15px;
         }
-
+        .footer strong { color: var(--gold-light); }
     </style>
 </head>
 <body>
 
-    <div class="container" style="max-width: 600px; margin: 50px auto;">
-        <div class="card dashboard-card" style="padding: 40px;">
-            
-            <div class="welcome-msg" style="text-align: center;">
-                {{ name }}, Saud Travels Me Aap Ka Swagat Hai
-            </div>
+    <div class="top-bar">
+        <div class="brand-logo">
+            <i class="fa-solid fa-crown" style="font-size: 24px;"></i>
+            Saud Travels Royal
+        </div>
+        <button class="logout-btn" onclick="window.location.href='/logout'">
+            Logout
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+    </div>
 
-            <!-- Step 1: Document Details -->
-            <div id="step1">
-                <div class="input-group">
-                    <label>Apna 12 Digit Ka Aadhar Number Fill Karo</label>
-                    <input type="text" id="aadharNum" placeholder="XXXX-XXXX-XXXX" maxlength="12" pattern="\d{12}" required>
-                </div>
-                <button class="btn-orange" onclick="showPayment()">Proceed To Pay ₹39</button>
-            </div>
-
-            <!-- Step 2: Payment, QR Setup & UTR -->
-            <div id="step2" class="payment-section" style="display: none;">
-                <div class="qr-box">
-                    <h3 style="color: #0056b3; font-weight: 800; font-size: 22px; margin-top: 0;">Pay ₹39 via UPI</h3>
-                    
-                    <!-- 1 Minute Timer -->
-                    <div id="timerContainer">
-                        <div class="timer-text" id="timerDisplay">01:00</div>
-                        <p class="timer-msg" id="timerMessage">Kripya payment complete karein. Proceed button countdown ke baad aayega.</p>
-                    </div>
-
-                    <!-- Payment QR Code (Fixed for ₹39) -->
-                    <!-- URL encoded upi://pay?pa=8604890504@upi&pn=SaudTravels&am=39.00&cu=INR -->
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi%3A%2F%2Fpay%3Fpa%3D8604890504%40upi%26pn%3DSaudTravels%26am%3D39.00%26cu%3DINR" alt="Secure UPI Payment QR Code">
-                    <p style="margin-top: 15px; font-size: 18px; color: #333;"><strong>UPI ID:</strong> <span style="color: #e67e22;">8604890504@upi</span></p>
-
-                    <!-- UTR Box: Yeh 10 second baad show hoga -->
-                    <div id="utrContainer" style="display: none; margin-top: 25px; text-align: left;" class="fade-in-element">
-                        <div class="input-group">
-                            <label style="color: #c0392b;">Payment Ke Dauran Jo UTR / Transaction ID (12 Digit) Mila Hai Use Dalein</label>
-                            <input type="text" id="utrNum" placeholder="Enter 12 Digit UTR Number" maxlength="12" pattern="\d{12}" required>
-                        </div>
-                    </div>
-
-                </div>
-                
-                <!-- Proceed Button: Timer khatam hone par aayega -->
-                <button class="btn-proceed" id="proceedBtn" style="display: none;" onclick="finalSubmit()">Proceed</button>
-            </div>
-
+    <div class="side-support">
+        <div class="support-icon"><i class="fa-solid fa-headset"></i></div>
+        <div class="support-details">
+            <h4>Royal Support</h4>
+            <p>📞 +91 8604890504</p>
+            <p>📞 +91 7238870535</p>
+            <p>✉️ saud.travels.csc@gmail.com</p>
         </div>
     </div>
 
-    <div class="footer" style="background: #1a252f; border-top: 4px solid #f39c12; color: white;">
-        <p><strong>Customer Care:</strong> 8604890504, 7235870535 | <strong>Email:</strong> saud.travels.csc@gmail.com</p>
-        <p class="refund-policy" style="color: #f39c12; letter-spacing: 0.5px;">Ager Payment Faild Hota Hai to 2 se 4 din Ke Ander Me App Ke Account Per Redirect Ker diya Jayga.</p>
+    <div class="main-container">
+        
+        <h2 class="section-title">✦ Choose Your Service ✦</h2>
+        
+        <div class="services-grid">
+            
+            <div class="service-card" onclick="openPanForm()">
+                <div class="premium-badge">PREMIUM</div>
+                <div class="icon">🔍</div>
+                <h3>Aadhaar to PAN Find</h3>
+                <p>Khoye hue PAN card ka number yahan se search karein.</p>
+                <div class="click-cta">👉 Click Here For Service</div>
+            </div>
+
+            <div class="service-card" onclick="window.open('https://www.calculator.net/age-calculator.html', '_blank')">
+                <div class="icon">🧮</div>
+                <h3>Age Calculator</h3>
+                <p>Date of Birth se exact age (umar) calculate karein.</p>
+                <div class="click-cta">👉 Click Here For Service</div>
+            </div>
+
+            <div class="service-card" onclick="window.open('https://myaadhaar.uidai.gov.in/check-aadhaar-validity/en', '_blank')">
+                <div class="icon">📱</div>
+                <h3>Mobile Link Status</h3>
+                <p>Check karein kaun sa mobile number link hai.</p>
+                <div class="click-cta">👉 Click Here For Service</div>
+            </div>
+            
+            <div class="service-card" onclick="window.open('https://myaadhaar.uidai.gov.in/genricDownloadAadhaar/en', '_blank')">
+                <div class="icon">📥</div>
+                <h3>Download E-Card</h3>
+                <p>OTP verify karke apna E-Card PDF mein download karein.</p>
+                <div class="click-cta">👉 Click Here For Service</div>
+            </div>
+            
+        </div>
+
+        <div id="panFindSection" class="pan-find-container">
+            <div class="sp-wrap">
+                
+                <div class="sp-hero">
+                    <div class="badge"><i class="fa fa-magnifying-glass"></i> Instant PAN Search</div>
+                    <h1>Search PAN Number by Aadhaar</h1>
+                    <p>Aadhaar number daalo — aapka PAN turant dhoondha jaayega</p>
+                </div>
+
+                <div class="sp-card" id="searchFormCard">
+                    <form id="panSearchForm" onsubmit="handleSearch(event)">
+                        
+                        <div class="sp-field">
+                            <label class="sp-label"><i class="fa fa-id-card"></i> Aadhaar Number</label>
+                            <input class="sp-input" type="text" id="aadharNum" placeholder="Enter 12-digit Aadhaar Number" maxlength="12" pattern="\d{12}" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
+                        </div>
+
+                        <div class="sp-field">
+                            <label class="sp-label"><i class="fa fa-mobile-alt"></i> WhatsApp / Contact Number</label>
+                            <input class="sp-input" type="text" id="mobileNum" placeholder="Enter 10-digit WhatsApp / mobile number" maxlength="10" pattern="\d{10}" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
+                            <div class="sp-notice">
+                                <i class="fa fa-info-circle" style="margin-top:2px;"></i>
+                                <span>सूचना: कृपया 10 अंकों का मोबाइल नंबर दर्ज करें। इस नंबर पर कोई ओटीपी नहीं आएगा।</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="searchBtn" class="sp-btn">
+                            <i class="fa fa-magnifying-glass"></i> Search PAN
+                        </button>
+
+                        <div class="sp-loading" id="loadingBarContainer">
+                            <div class="sp-bar-bg">
+                                <div class="sp-bar-fill" id="loadingFill"></div>
+                            </div>
+                            <p class="sp-loading-txt"><i class="fa fa-spinner fa-spin"></i> Searching for PAN details...</p>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="sp-card" id="paymentSection" style="display: none;">
+                    <div class="qr-box">
+                        <h3 style="color: var(--gold-primary); font-family: 'Cinzel', serif; font-size: 26px; margin: 0 0 10px 0;">Pay ₹39 via UPI App</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">Scan QR code with PhonePe, Google Pay or Paytm</p>
+                        
+                        <div id="timerContainer">
+                            <div class="timer-text" id="timerDisplay">00:30</div>
+                            <div class="timer-progress-bar" id="timerProgress"></div>
+                            <p class="timer-msg" id="timerMessage">Kripya payment pura karein. UTR option jaldi khulega.</p>
+                        </div>
+
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi%3A%2F%2Fpay%3Fpa%3D8604890504%40upi%26pn%3DSaudTravels%26am%3D39.00%26cu%3DINR" alt="Secure UPI QR">
+                        <p style="font-size: 18px; color: var(--text-main); margin-top: 20px;"><strong>UPI ID:</strong> <span style="color: var(--gold-light);">8604890504@upi</span></p>
+
+                        <div id="utrContainer" style="display: none; margin-top: 30px; text-align: left; padding-top: 30px; border-top: 1px dashed rgba(212, 175, 55, 0.4);">
+                            <div class="sp-field" style="margin-bottom: 0;">
+                                <label class="sp-label">Payment History se 12 Digit ka UTR / Ref No. yahan dalein:</label>
+                                <input class="sp-input" type="text" id="utrNum" placeholder="e.g. 3123XXXXXXXX" maxlength="12" pattern="\d{12}" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-success" id="proceedBtn" style="display: none;" onclick="finalSubmit()">
+                        <i class="fa-solid fa-circle-check"></i> Verify Payment & Proceed
+                    </button>
+                </div>
+
+                <div class="assurance">
+                    <p>✅ Instant refund available if PAN is not found or any issue occurs.</p>
+                    <div class="contact-line">
+                        For assistance: 📞 <a href="tel:+918604890504">+91 8604890504</a>
+                        &nbsp;|&nbsp; <a href="https://wa.me/918604890504?text=Hello%2C%20I%20need%20help%20with%20PAN%20search." target="_blank"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+                        &nbsp;|&nbsp; 🕘 08:00 AM – 09:00 PM
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>Customer Care:</strong> +91 8604890504 | <strong>Email:</strong> saud.travels.csc@gmail.com</p>
+        <p style="color: var(--gold-primary); margin-top: 10px; font-weight: 500;">Refund Policy: Agar payment fail hota hai to 2 se 4 din ke andar aapke account me wapas aa jayega.</p>
     </div>
 
     <script>
-        function showPayment() {
+        // Open PAN Form Section smoothly
+        function openPanForm() {
+            const panSection = document.getElementById("panFindSection");
+            panSection.style.display = "block";
+            setTimeout(() => {
+                panSection.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 100);
+        }
+
+        // Handle Search Button Click & Loading Animation
+        function handleSearch(event) {
+            event.preventDefault();
+            
             let aadhar = document.getElementById("aadharNum").value;
-            // Check if Aadhar is exactly 12 digits
-            if(aadhar.length !== 12 || isNaN(aadhar)) {
-                alert("Kripya sahi 12-digit Aadhar number darj karein.");
+            let mobile = document.getElementById("mobileNum").value;
+
+            if(aadhar.length !== 12) {
+                alert("Kripya sahi 12-digit Aadhaar number darj karein.");
                 return;
             }
+            if(mobile.length !== 10) {
+                alert("Kripya sahi 10-digit Mobile number darj karein.");
+                return;
+            }
+
+            // Alert for Fees before processing
+            let confirmFee = confirm("Pan Find karne ke liye ₹98 fees lagegi.\nJisme ₹39 abhi pay karna hoga aur bacha hua ₹59 baad me dena hoga.\n\nKya aap aage badhna chahte hain?");
             
-            // UI Transition
-            document.getElementById("step1").style.display = "none";
-            document.getElementById("step2").style.display = "block";
+            if(!confirmFee) return;
 
-            // Timer Started for 60 Seconds (1 Minute)
-            startTimer(60);
+            // Start Loading
+            let btn = document.getElementById('searchBtn');
+            let bar = document.getElementById('loadingBarContainer');
+            let fill = document.getElementById('loadingFill');
 
-            // 10 Second Delay for UTR Input Box
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+            bar.style.display = 'block';
+
+            let p = 0;
+            let iv = setInterval(function () {
+                p += Math.random() * 20; // Fast loading simulation
+                if (p >= 100) { 
+                    p = 100; 
+                    clearInterval(iv); 
+                    
+                    // After loading is 100%, transition to Payment Box
+                    setTimeout(showPaymentSection, 500); 
+                }
+                fill.style.width = p + '%';
+            }, 400);
+        }
+
+        // Show Payment QR and Start Timer
+        function showPaymentSection() {
+            document.getElementById("searchFormCard").style.display = "none";
+            document.getElementById("paymentSection").style.display = "block";
+            
+            // 30 Seconds Timer
+            startTimer(30);
+
+            // Show UTR Option after 10 seconds
             setTimeout(function() {
                 document.getElementById("utrContainer").style.display = "block";
-            }, 10000); // 10000 ms = 10 seconds
+            }, 10000); 
         }
 
         function startTimer(duration) {
@@ -242,6 +721,7 @@
             let proceedBtn = document.getElementById('proceedBtn');
             let timerContainer = document.getElementById('timerContainer');
             let timerMessage = document.getElementById('timerMessage');
+            let progressBar = document.getElementById('timerProgress');
 
             let countdown = setInterval(function () {
                 let minutes = parseInt(timer / 60, 10);
@@ -251,35 +731,35 @@
                 seconds = seconds < 10 ? "0" + seconds : seconds;
 
                 display.textContent = minutes + ":" + seconds;
+                
+                // Update Progress Bar
+                let percentage = (timer / duration) * 100;
+                progressBar.style.width = percentage + "%";
 
-                // Jab 15 seconds bachein tab warning message show hoga
-                if (timer === 15) {
-                    timerMessage.innerHTML = "Kripya apna payment karein, samay samapt hone wala hai!";
-                    timerMessage.classList.add("warning-msg"); 
-                    display.style.color = "#c0392b"; 
+                // 10 Seconds remaining urgent alert
+                if (timer <= 10) {
+                    timerMessage.innerHTML = "Jaldi payment karein, samay samapt hone wala hai!";
+                    timerMessage.style.color = "#ff4757";
+                    display.classList.add("urgent-timer");
                 }
 
                 if (--timer < 0) {
-                    // Timer Ends (60 Seconds complete)
                     clearInterval(countdown);
                     timerContainer.style.display = "none";
-                    proceedBtn.style.display = "block";
+                    proceedBtn.style.display = "block"; // Show Final Proceed Button
                 }
             }, 1000);
         }
 
-        // Final Submit ab directly Proceed button par set hai, Step 3 ki zaroorat nahi
+        // Final Submit Verification
         function finalSubmit() {
             let utr = document.getElementById("utrNum").value;
             if(utr.length !== 12 || isNaN(utr)) {
-                alert("Kripya sahi 12-digit UTR number darj karein.");
+                alert("Kripya sahi 12-digit UTR/Transaction number darj karein.");
                 return;
             }
             
-            // Final Legal Prompt
-            alert("Pan Finde Ki Total Fees 98 Rupe Hai Jo Ki Abh App Ko Bus 59 Aur Pay Kerna Hoga Jo Final Rahega");
-            
-            // API Redirection
+            alert("Payment Verified! \n\nPan Find ki total fees ₹98 hai. Ab aapko aage jakar baaki bache huye ₹59 aur pay karne honge.");
             window.location.href = "https://panfindservice.com/search_pan.php";
         }
     </script>
